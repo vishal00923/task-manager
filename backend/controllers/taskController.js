@@ -18,6 +18,11 @@ const getTasks = async (req, res) => {
 
     if (req.user.role === 'admin') {
       tasks = await Task.find(filter).populate('assignedTo', 'name email profileImageUrl');
+    } else {
+      tasks = await Task.find({ ...filter, assignedTo: req.user._id }).populate(
+        'assignedTo',
+        'name email profileImageUrl',
+      );
     }
 
     // console.log(`tasks:: ${tasks}`);
