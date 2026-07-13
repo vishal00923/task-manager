@@ -6,6 +6,8 @@ import { UserContext } from '../../context/userContext';
 import { capitalizeName } from '../../utils/helper';
 import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from '../../utils/data';
 
+import DEFAULT_PROFILE from '../../assets/images/default_profile.png';
+
 const SideMenu = ({ activeMenu }) => {
   const [sideMenuData, setSideMenuData] = useState([]);
 
@@ -41,14 +43,18 @@ const SideMenu = ({ activeMenu }) => {
         <div className='relative'>
           <img
             className='w-20 h-20 bg-slate-400 rounded-full'
-            src={user?.profileImageUrl || ''}
+            src={user?.profileImageUrl || DEFAULT_PROFILE}
             alt='Profile Image'
           />
         </div>
 
-        {user?.role === 'admin' && (
+        {user?.role === 'admin' ? (
           <div className='text-[10px] font-medium text-white bg-primary px-3 py-0.5 rounded mt-1'>
             Admin
+          </div>
+        ) : (
+          <div className='text-[10px] font-medium text-white bg-green-400 px-3 py-0.5 rounded mt-1'>
+            Member
           </div>
         )}
 
