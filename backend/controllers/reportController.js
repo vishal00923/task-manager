@@ -8,7 +8,7 @@ const excelJS = require('exceljs');
 // @access  Private (Admin)
 const exportTasksReport = async (req, res) => {
   try {
-    const tasks = await Task.find().populate('assignedTo', 'name, email');
+    const tasks = await Task.find().populate('assignedTo', 'name email');
 
     const workbook = new excelJS.Workbook();
     const worksheet = workbook.addWorksheet('Tasks Report');
@@ -19,12 +19,13 @@ const exportTasksReport = async (req, res) => {
       { header: 'Description', key: 'description', width: 50 },
       { header: 'Priority', key: 'priority', width: 15 },
       { header: 'Status', key: 'status', width: 20 },
-      { header: 'Due Data', key: 'dueDate', width: 20 },
+      { header: 'Due Date', key: 'dueDate', width: 20 },
       { header: 'Assigned To', key: 'assignedTo', width: 30 },
     ];
 
     tasks.forEach((task) => {
       const assignedTo = task.assignedTo.map((user) => `${user.name} (${user.email})`).join(', ');
+
       worksheet.addRow({
         _id: task._id,
         title: task.title,
@@ -58,8 +59,6 @@ const exportTasksReport = async (req, res) => {
 // @access  Private (Admin)
 const exportUsersReport = async (req, res) => {
   try {
-    console.log('Export Users API called.');
-
     const users = await User.find().select('name email _id').lean();
     const userTasks = await Task.find().populate('assignedTo', 'name email _id');
 
